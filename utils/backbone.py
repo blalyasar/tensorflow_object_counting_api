@@ -2,6 +2,13 @@ import glob, os, tarfile, urllib
 import tensorflow as tf
 from utils import label_map_util
 
+
+
+# for AttributeError: module 'tensorflow' has no attribute 'GraphDef'
+import tensorflow.compat.v1 as tfcv1
+tfcv1.disable_v2_behavior()
+
+
 def set_model(model_name, label_name):
 	model_found = 0
 
@@ -35,8 +42,8 @@ def set_model(model_name, label_name):
 	# Load a (frozen) Tensorflow model into memory.
 	detection_graph = tf.Graph()
 	with detection_graph.as_default():
-	  od_graph_def = tf.GraphDef()
-	  with tf.gfile.GFile(path_to_ckpt, 'rb') as fid:
+	  od_graph_def = tf.compat.v1.GraphDef() #od_graph_def = tf.GraphDef() -> for tensorflow 2.4 version
+	  with tf.io.gfile.GFile(path_to_ckpt, 'rb') as fid:# #with tf.gfile.GFile(path_to_ckpt, 'rb') as fid:  -> for tensorflow 2.4 version
 	    serialized_graph = fid.read()
 	    od_graph_def.ParseFromString(serialized_graph)
 	    tf.import_graph_def(od_graph_def, name='')
