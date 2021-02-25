@@ -10,6 +10,11 @@ import cv2
 import numpy as np
 from utils import visualization_utils as vis_util
 
+
+# for tensorflow2.4 version AttributeError: module 'tensorflow' has no attribute 'Session' from blalyasar
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
+
 # Variables
 total_passed_objects = 0  # using it to count objects
 
